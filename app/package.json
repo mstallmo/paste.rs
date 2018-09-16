@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -91,5 +91,5 @@
   "eslintConfig": {
     "extends": "react-app"
   },
-  "homepage": "http://mywebsite.com/web"
+  "homepage": "http://mywebsite.com/app"
 }

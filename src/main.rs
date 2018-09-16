@@ -9,9 +9,8 @@ use std::io;
 use std::path::Path;
 
 mod paste_id;
-mod web;
+mod app;
 use crate::paste_id::PasteID;
-
 
 #[get("/")]
 fn index() -> &'static str {
@@ -46,6 +45,6 @@ fn retrieve(id: PasteID) -> Option<File> {
 fn main() {
     rocket::ignite()
         .mount("/", routes![index, upload, retrieve])
-        .mount("/web", routes![web::web, web::files])
+        .mount("/app", routes![app::web, app::files])
         .launch();
 }

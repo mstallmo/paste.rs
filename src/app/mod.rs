@@ -4,10 +4,10 @@ use std::path::{Path, PathBuf};
 
 #[get("/")]
 fn web() -> io::Result<NamedFile> {
-    NamedFile::open(".dist/index.html")
+    NamedFile::open("build/index.html")
 }
 
 #[get("/<file..>")]
 fn files(file: PathBuf) -> Option<NamedFile> {
-    NamedFile::open(Path::new(".dist/").join(file)).ok()
+    NamedFile::open(Path::new("build/").join(file)).ok()
 }
