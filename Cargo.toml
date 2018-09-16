@@ -1,0 +1,10 @@
+[package]
+name = "rocket-pastebin"
+version = "0.1.0"
+authors = ["Mason Stallmo <masonstallmo@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+rocket = "0.3.16"
+rocket_codegen = "0.3.16"
+rand = "0.5.5"
