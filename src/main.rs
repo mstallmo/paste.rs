@@ -3,14 +3,15 @@
 
 extern crate rocket;
 
-use rocket::response::NamedFile;
 use rocket::Data;
 use std::fs::File;
 use std::io;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 mod paste_id;
+mod web;
 use crate::paste_id::PasteID;
+
 
 #[get("/")]
 fn index() -> &'static str {
@@ -26,16 +27,6 @@ fn index() -> &'static str {
     "
 }
 
-#[get("/web")]
-fn web() -> io::Result<NamedFile> {
-    NamedFile::open("web/build/index.html")
-}
-
-#[get("/<file..>")]
-fn files(file: PathBuf) -> Option<NamedFile> {
-    NamedFile::open(Path::new("web/build/").join(file)).ok()
-}
-
 #[post("/", data = "<paste>")]
 fn upload(paste: Data) -> io::Result<String> {
     let id = PasteID::new(3);
@@ -46,14 +37,15 @@ fn upload(paste: Data) -> io::Result<String> {
     Ok(url)
 }
 
-//#[get("/<id>")]
-//fn retrieve(id: PasteID) -> Option<File> {
-//    let filename = format!("upload/{id}", id = id);
-//    File::open(&filename).ok()
-//}
+#[get("/<id>")]
+fn retrieve(id: PasteID) -> Option<File> {
+   let filename = format!("upload/{id}", id = id);
+   File::open(&filename).ok()
+}
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, upload, /*retrieve,*/ web, files])
+        .mount("/", routes![index, upload, retrieve])
+        .mount("/web", routes![web::web, web::files])
         .launch();
 }
