@@ -8,9 +8,7 @@ extern crate rocket;
 
 use hashids::HashIds;
 use rocket::Data;
-use std::fs::File;
 use std::io::{Read, Result};
-use std::path::Path;
 
 mod app;
 mod database;
@@ -53,7 +51,7 @@ fn retrieve(hash_string: String) -> Option<String> {
     let ids_some = HashIds::new_with_salt_and_min_length("the answer is 42".to_string(), 10);
     let ids = match ids_some {
         Ok(v) => v,
-        Err(e) => {
+        Err(_e) => {
             println!("error");
             return None;
         }
@@ -73,7 +71,7 @@ fn retrieve(hash_string: String) -> Option<String> {
 
     match results.pop() {
         Some(v) => Some(v.paste),
-        None => None
+        None => None,
     }
 }
 
