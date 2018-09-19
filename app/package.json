@@ -113,7 +113,6 @@
       "git add"
     ]
   },
-  "homepage": "http://mywebsite.com/app",
   "devDependencies": {
     "eslint-plugin-prettier": "^2.6.2",
     "husky": "^1.0.0-rc.14",
