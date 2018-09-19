@@ -1,7 +1,8 @@
-import React, { Component } from 'react';
+import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
 
 const App = props => (
   <Router>
@@ -23,12 +24,6 @@ const App = props => (
       <Route path="/topics" component={Topics} />
     </div>
   </Router>
-);
-
-const Home = () => (
-  <div>
-    <h2>Home</h2>
-  </div>
 );
 
 const About = () => (
