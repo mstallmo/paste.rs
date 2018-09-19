@@ -91,7 +91,18 @@
     ]
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "plugins": ["prettier"],
+    "extends": "react-app",
+    "rules": {
+      "prettier/prettier": "error"
+    }
   },
-  "homepage": "http://mywebsite.com/app"
+  "prettier": {
+    "singleQuote": true
+  },
+  "homepage": "http://mywebsite.com/app",
+  "devDependencies": {
+    "eslint-plugin-prettier": "^2.6.2",
+    "prettier": "^1.14.2"
+  }
 }
