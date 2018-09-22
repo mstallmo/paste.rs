@@ -1,6 +1,6 @@
 extern crate hashids;
 
-use hashids::HashIds;
+use self::hashids::HashIds;
 use rocket::Data;
 use std::io::{Read, Result};
 use crate::database;
@@ -27,7 +27,7 @@ fn upload(paste: Data) -> Result<String> {
     let post = database::create_paste(&connection, &buffer);
     let url = format!(
         "{host}/{hash}",
-        host = "http://localhost:8000",
+        host = "http://localhost:8000/api",
         hash = post.hash
     );
 

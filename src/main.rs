@@ -5,16 +5,16 @@
 extern crate diesel;
 #[macro_use]
 extern crate rocket;
-extern crate rocket_contrib;
 
-use rocket_contrib::static_files::StaticFiles;
-
+#[macro_use]
+mod macros;
 mod api;
 mod database;
+mod app;
 
 fn main() {
     rocket::ignite()
-        .mount("/", StaticFiles::from("build"))
+        .mount("/", routes![app::index, app::files, app::catch_unknown_routes])
         .mount("/api", routes![api::index, api::upload, api::retrieve])
         .launch();
 }
