@@ -1,3 +1,4 @@
+language: rust
 matrix:
   include:
     - language: rust
