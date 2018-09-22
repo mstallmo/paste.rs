@@ -7,9 +7,14 @@ describe('View Paste Page', () => {
   let component;
   const testHash = 'EGQRz2R6mK';
   let testText = 'This is my test paste text';
+  const match = {
+    params: {
+      hash: testHash
+    }
+  };
   beforeEach(() => {
     global.fetch = mockFetch({ textResult: testText });
-    component = shallow(<ViewPaste hash={testHash} />);
+    component = shallow(<ViewPaste match={match} />);
   });
 
   afterEach(() => {
