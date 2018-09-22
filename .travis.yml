@@ -1,10 +1,11 @@
 matrix:
   include:
     - language: rust
+      cache: cargo
       before_script:
         - rustup toolchain install nightly
       script:
-        - cargo +nightly build --verbose --all
+        - cargo +nightly build --all --release
     - language: node_js
       node_js:
         - 8.12
