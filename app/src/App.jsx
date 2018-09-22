@@ -1,9 +1,10 @@
-import React, { Component } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
-import { BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
+import Home from './pages/Home';
+import ViewPaste from './pages/ViewPaste';
 
-const App = (props) => (
+const App = props => (
   <Router>
     <div>
       <ul>
@@ -17,21 +18,14 @@ const App = (props) => (
           <Link to="/topics">Topics</Link>
         </li>
       </ul>
-
       <hr />
-
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/topics" component={Topics} />
+      <Route path="/view/:hash" component={ViewPaste} />
     </div>
   </Router>
 );
-
-const Home = () => (
-    <div>
-      <h2>Home</h2>
-    </div>
-  );
 
 const About = () => (
   <div>

@@ -13,3 +13,5 @@ build/
 
 # Don't include .env environment variables
 .env
+
+.idea/

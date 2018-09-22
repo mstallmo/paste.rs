@@ -1,83 +1,20 @@
-#![feature(plugin)]
+#![feature(plugin, decl_macro, proc_macro_non_items)]
 #![plugin(rocket_codegen)]
 
 #[macro_use]
 extern crate diesel;
-extern crate hashids;
+#[macro_use]
 extern crate rocket;
 
-use hashids::HashIds;
-use rocket::Data;
-use std::io::{Read, Result};
-
-mod app;
+#[macro_use]
+mod macros;
+mod api;
 mod database;
-
-#[get("/")]
-fn index() -> &'static str {
-    "\
-    USAGE
-
-        POST /
-            accepts raw data in teh body of the request and responds with a URL of
-            a page containing the body's content
-
-        GET /<id>
-            retrieves the content for the paste with id `<id>`
-    "
-}
-
-#[post("/", data = "<paste>")]
-fn upload(paste: Data) -> Result<String> {
-    let mut buffer = String::new();
-    paste.open().read_to_string(&mut buffer)?;
-    let connection = database::establish_connection();
-    let post = database::create_paste(&connection, &buffer);
-    let url = format!(
-        "{host}/{hash}",
-        host = "http://localhost:8000",
-        hash = post.hash
-    );
-
-    Ok(url)
-}
-
-#[get("/<hash_string>")]
-fn retrieve(hash_string: String) -> Option<String> {
-    use crate::database::models::*;
-    use crate::database::schema::pastes::dsl::*;
-    use diesel::prelude::*;
-
-    let ids_some = HashIds::new_with_salt_and_min_length("the answer is 42".to_string(), 10);
-    let ids = match ids_some {
-        Ok(v) => v,
-        Err(_e) => {
-            println!("error");
-            return None;
-        }
-    };
-
-    let mut longs = ids.decode(hash_string);
-    let request_id = match longs.pop() {
-        Some(v) => v as i32,
-        None => return None,
-    };
-
-    let connection = database::establish_connection();
-    let mut results = pastes
-        .filter(id.eq(request_id))
-        .load::<Paste>(&connection)
-        .expect("Error loading pastes");
-
-    match results.pop() {
-        Some(v) => Some(v.paste),
-        None => None,
-    }
-}
+mod app;
 
 fn main() {
     rocket::ignite()
-        .mount("/", routes![index, upload, retrieve])
-        .mount("/app", routes![app::web, app::files])
+        .mount("/", routes![app::index, app::files, app::catch_unknown_routes])
+        .mount("/api", routes![api::index, api::upload, api::retrieve])
         .launch();
 }
