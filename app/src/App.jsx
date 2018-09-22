@@ -1,8 +1,8 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
+import ViewPaste from './pages/ViewPaste';
 
 const App = props => (
   <Router>
@@ -22,6 +22,7 @@ const App = props => (
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
       <Route path="/topics" component={Topics} />
+      <Route path="/view/:hash" component={ViewPaste} />
     </div>
   </Router>
 );
