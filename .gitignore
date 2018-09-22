@@ -8,8 +8,10 @@
 /target
 **/*.rs.bk
 
-upload/
+# Ignore webpack build output
+build/
 
-.dist/
-
+# Don't include .env environment variables
 .env
+
+.idea/
