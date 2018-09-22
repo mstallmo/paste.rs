@@ -1,10 +1,6 @@
 language: rust
-matrix:
-  include:
-    - language: rust
-      rust:
-        - nightly
-    cache: cargo
-    script:
-      - cargo build --verbose --all
-
+rust:
+  - nightly
+cache: cargo
+script:
+  - cargo build --verbose --all
