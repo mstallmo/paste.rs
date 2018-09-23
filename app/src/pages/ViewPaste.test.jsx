@@ -26,7 +26,7 @@ describe('View Paste Page', () => {
   });
 
   it('should take the call the API with the hash property', () => {
-    expect(fetch).toHaveBeenCalledWith(`/api/${testHash}`);
+    expect(fetch).toHaveBeenCalledWith(`/api/v1/${testHash}`);
   });
 
   it('should add the returned text to the component state', done => {
