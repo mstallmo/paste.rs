@@ -5,16 +5,16 @@ use rocket::Data;
 use std::io::{Read, Result};
 use crate::database;
 
-#[get("/")]
+#[get("/docs")]
 fn index() -> &'static str {
     "\
     USAGE
 
-        POST /
+        POST api/v1/
             accepts raw data in teh body of the request and responds with a URL of
             a page containing the body's content
 
-        GET /<id>
+        GET api/v1/<id>
             retrieves the content for the paste with id `<id>`
     "
 }

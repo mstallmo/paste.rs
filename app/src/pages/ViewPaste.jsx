@@ -10,7 +10,7 @@ class ViewPaste extends Component {
   }
 
   componentDidMount() {
-    fetch(`/api/${this.props.match.params.hash}`)
+    fetch(`/api/v1/${this.props.match.params.hash}`)
       .then(res => res.text())
       .then(paste => {
         this.setState({ pasteText: paste });
