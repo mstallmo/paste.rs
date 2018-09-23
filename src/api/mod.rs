@@ -20,11 +20,10 @@ fn index() -> &'static str {
 }
 
 #[post("/", data = "<paste>")]
-fn upload(paste: Data) -> Result<String> {
+fn upload(paste: Data, conn: database::DbConn) -> Result<String> {
     let mut buffer = String::new();
     paste.open().read_to_string(&mut buffer)?;
-    let connection = database::establish_connection();
-    let post = database::create_paste(&connection, &buffer);
+    let post = database::create_paste(&*conn, &buffer);
     let url = format!(
         "{host}/{hash}",
         host = "http://localhost:8000/api",
@@ -35,7 +34,7 @@ fn upload(paste: Data) -> Result<String> {
 }
 
 #[get("/<hash_string>")]
-fn retrieve(hash_string: String) -> Option<String> {
+fn retrieve(hash_string: String, conn: database::DbConn) -> Option<String> {
     use crate::database::models::*;
     use crate::database::schema::pastes::dsl::*;
     use diesel::prelude::*;
@@ -55,10 +54,9 @@ fn retrieve(hash_string: String) -> Option<String> {
         None => return None,
     };
 
-    let connection = database::establish_connection();
     let mut results = pastes
         .filter(id.eq(request_id))
-        .load::<Paste>(&connection)
+        .load::<Paste>(&*conn)
         .expect("Error loading pastes");
 
     match results.pop() {

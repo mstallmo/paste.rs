@@ -16,5 +16,6 @@ fn main() {
     rocket::ignite()
         .mount("/", routes![app::index, app::files, app::catch_unknown_routes])
         .mount("/api", routes![api::index, api::upload, api::retrieve])
+        .manage(database::init_pool())
         .launch();
 }
