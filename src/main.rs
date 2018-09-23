@@ -3,8 +3,10 @@
 
 #[macro_use]
 extern crate diesel;
-#[macro_use]
 extern crate rocket;
+
+#[cfg(test)]
+mod tests;
 
 #[macro_use]
 mod macros;
@@ -12,10 +14,14 @@ mod api;
 mod database;
 mod app;
 
-fn main() {
+fn rocket() -> rocket::Rocket {
     rocket::ignite()
         .mount("/", routes![app::index, app::files, app::catch_unknown_routes])
         .mount("/api/v1", routes![api::index, api::upload, api::retrieve])
         .manage(database::init_pool())
-        .launch();
 }
+
+fn main() {
+    rocket().launch();
+}
+
