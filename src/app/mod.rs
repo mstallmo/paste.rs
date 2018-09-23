@@ -13,7 +13,7 @@ fn files(file: PathBuf) -> Option<NamedFile> {
     NamedFile::open(Path::new("build/static/").join(file)).ok()
 }
 
-#[get("/<file..>", rank=2)]
+#[get("/<file..>", rank = 2)]
 fn catch_unknown_routes(file: PathBuf) -> io::Result<NamedFile> {
     ignore!(file);
     NamedFile::open("build/index.html")
