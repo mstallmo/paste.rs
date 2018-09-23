@@ -10,7 +10,7 @@ class Home extends Component {
   }
 
   onClick = () => {
-    fetch('/api/', {
+    fetch('/api/v1', {
       method: 'POST',
       body: this.state.pasteText,
       headers: {
