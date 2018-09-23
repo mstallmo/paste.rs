@@ -5,6 +5,15 @@ rust:
 cache: cargo
 services:
   - postgresql
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10
+    - postgresql-client-10
+env:
+  global:
+    - PGPORT=5433
 before_install:
   - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
   - sudo apt-get install -y nodejs
@@ -16,7 +25,7 @@ before_install:
 install:
   - yarn install
 before_script:
-  - psql -c 'create database rocket-pastebin;' -U postgres
+  - psql -c 'create database "rocket-pastebin";' -U postgres
 script:
   - yarn test
   - yarn build
