@@ -15,6 +15,9 @@ env:
   global:
     - PGPORT=5433
 before_install:
+  - sudo sed -i -e '/local.*peer/s/postgres/all/' -e 's/peer\|md5/trust/g' /etc/postgresql/*/main/pg_hba.conf
+  - sudo service postgresql restart
+  - sleep 1
   - curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash
   - sudo apt-get install -y nodejs
   - sudo apt-key adv --fetch-keys http://dl.yarnpkg.com/debian/pubkey.gpg
