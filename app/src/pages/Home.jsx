@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Button } from 'react-bootstrap';
 
 class Home extends Component {
   constructor(props) {
@@ -39,9 +40,9 @@ class Home extends Component {
           value={this.state.pasteText}
         />
         <br />
-        <button id={'submit-button'} onClick={() => this.onClick()}>
+        <Button id={'submit-button'} onClick={() => this.onClick()}>
           Submit
-        </button>
+        </Button>
       </div>
     );
   }
