@@ -11,8 +11,10 @@ use dotenv::dotenv;
 use std::env;
 use std::ops::Deref;
 use rocket::http::Status;
+use rocket::Outcome;
 use rocket::request::{self, FromRequest};
-use rocket::{Request, State, Outcome};
+use rocket::Request;
+use rocket::State;
 
 type PostgresPool = Pool<ConnectionManager<PgConnection>>;
 
@@ -46,7 +48,7 @@ impl Deref for DbConn {
     }
 }
 
-pub fn create_paste<'a>(conn: &PgConnection, paste: &'a str) -> Paste {
+pub fn create_paste(conn: &PgConnection, paste: &str) -> Paste {
     let new_paste = NewPaste { paste: paste };
 
     diesel::insert_into(schema::pastes::table)

@@ -1,5 +1,12 @@
 import React, { Component } from 'react';
-import { Button } from 'react-bootstrap';
+import {
+  Grid,
+  Row,
+  Col,
+  Button,
+  FormGroup,
+  FormControl
+} from 'react-bootstrap';
 
 class Home extends Component {
   constructor(props) {
@@ -32,18 +39,28 @@ class Home extends Component {
 
   render() {
     return (
-      <div>
-        <h2 className={'header'}>Home</h2>
-        <textarea
-          className={'paste-input'}
-          onChange={e => this.handleChange(e.target.value)}
-          value={this.state.pasteText}
-        />
-        <br />
-        <Button id={'submit-button'} onClick={() => this.onClick()}>
-          Submit
-        </Button>
-      </div>
+      <Grid>
+        <Row>
+          <Col md={12}>
+            <h2 className={'header'}>Home</h2>
+            <form>
+              <FormGroup>
+                <FormControl
+                  componentClass={'textarea'}
+                  value={this.state.pasteText}
+                  onChange={e => this.handleChange(e.target.value)}
+                  className={'paste-input'}
+                  rows={'8'}
+                />
+              </FormGroup>
+            </form>
+            <br />
+            <Button id={'submit-button'} onClick={() => this.onClick()}>
+              Submit
+            </Button>
+          </Col>
+        </Row>
+      </Grid>
     );
   }
 }
