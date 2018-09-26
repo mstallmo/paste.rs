@@ -1,7 +1,7 @@
 table! {
     pastes (id) {
         id -> Int4,
-        hash -> Text,
+        hash -> Nullable<Text>,
         paste -> Text,
     }
 }
