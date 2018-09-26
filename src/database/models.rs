@@ -10,8 +10,7 @@ pub struct Paste {
 }
 
 #[derive(Insertable, Debug)]
-#[table_name="pastes"]
+#[table_name = "pastes"]
 pub struct NewPaste<'a> {
     pub paste: &'a str,
 }
-
