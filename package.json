@@ -9,6 +9,6 @@
     "yarn": "^1.10.0"
   },
   "scripts": {
-    "postinstall": "yarn build --preifx app"
+    "postinstall": "yarn -cwd app/ build"
   }
 }
