@@ -49,7 +49,7 @@ impl Deref for DbConn {
 }
 
 pub fn create_paste(conn: &PgConnection, paste: &str) -> Paste {
-    let new_paste = NewPaste { paste: paste };
+    let new_paste = NewPaste { paste };
 
     diesel::insert_into(schema::pastes::table)
         .values(&new_paste)
