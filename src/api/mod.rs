@@ -1,9 +1,10 @@
 extern crate hashids;
 
 use self::hashids::HashIds;
+use crate::database::actions::pastes;
+use crate::database::DbConn;
 use rocket::Data;
-use std::io::{Read, Result};
-use crate::database;
+use std::io::Read;
 
 #[get("/docs")]
 fn index() -> &'static str {
@@ -19,48 +20,28 @@ fn index() -> &'static str {
     "
 }
 
-#[post("/", data = "<paste>")]
-fn upload(paste: Data, conn: database::DbConn) -> Result<String> {
+#[post("/", data = "<paste_data>")]
+fn upload(paste_data: Data, conn: DbConn) -> Option<String> {
     let mut buffer = String::new();
-    paste.open().read_to_string(&mut buffer)?;
-    let post = database::create_paste(&*conn, &buffer);
-    let url = format!(
-        "{host}/{hash}",
-        host = "http://localhost:8000/api",
-        hash = post.hash
-    );
+    paste_data.open().read_to_string(&mut buffer).unwrap();
+    match pastes::create_paste(&*conn, &buffer) {
+        Some(v) => {
+            let url = format!(
+                "{host}/{hash}",
+                host = "http://localhost:8000/api",
+                hash = v.hash?
+            );
 
-    Ok(url)
+            Some(url)
+        }
+        None => None,
+    }
 }
 
 #[get("/<hash_string>")]
-fn retrieve(hash_string: String, conn: database::DbConn) -> Option<String> {
-    use crate::database::models::*;
-    use crate::database::schema::pastes::dsl::*;
-    use diesel::prelude::*;
-
-    let ids_some = HashIds::new_with_salt_and_min_length("the answer is 42".to_string(), 10);
-    let ids = match ids_some {
-        Ok(v) => v,
-        Err(_e) => {
-            println!("error");
-            return None;
-        }
-    };
-
-    let mut longs = ids.decode(hash_string);
-    let request_id = match longs.pop() {
-        Some(v) => v as i32,
-        None => return None,
-    };
-
-    let mut results = pastes
-        .filter(id.eq(request_id))
-        .load::<Paste>(&*conn)
-        .expect("Error loading pastes");
-
-    match results.pop() {
-        Some(v) => Some(v.paste),
-        None => None,
+fn retrieve(hash_string: String, conn: DbConn) -> String {
+    match pastes::retrieve_paste(&*conn, hash_string) {
+        Some(v) => v.paste,
+        None => String::from("Error: Paste Not Found"),
     }
 }

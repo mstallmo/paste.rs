@@ -2,17 +2,18 @@ extern crate dotenv;
 
 pub mod models;
 pub mod schema;
+pub mod actions;
 
-use self::models::{NewPaste, Paste};
 use diesel::pg::PgConnection;
-use diesel::prelude::*;
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use dotenv::dotenv;
-use std::env;
-use std::ops::Deref;
 use rocket::http::Status;
 use rocket::request::{self, FromRequest};
-use rocket::{Request, State, Outcome};
+use rocket::Outcome;
+use rocket::Request;
+use rocket::State;
+use std::env;
+use std::ops::Deref;
 
 type PostgresPool = Pool<ConnectionManager<PgConnection>>;
 
@@ -33,7 +34,7 @@ impl<'a, 'r> FromRequest<'a, 'r> for DbConn {
         let pool = request.guard::<State<PostgresPool>>()?;
         match pool.get() {
             Ok(conn) => Outcome::Success(DbConn(conn)),
-            Err(_) => Outcome::Failure((Status::ServiceUnavailable, ()))
+            Err(_) => Outcome::Failure((Status::ServiceUnavailable, ())),
         }
     }
 }
@@ -44,13 +45,4 @@ impl Deref for DbConn {
     fn deref(&self) -> &Self::Target {
         &self.0
     }
-}
-
-pub fn create_paste<'a>(conn: &PgConnection, paste: &'a str) -> Paste {
-    let new_paste = NewPaste { paste: paste };
-
-    diesel::insert_into(schema::pastes::table)
-        .values(&new_paste)
-        .get_result(conn)
-        .expect("Error saving new paste")
 }

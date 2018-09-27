@@ -2,16 +2,15 @@
 
 use super::schema::pastes;
 
-#[derive(Debug, Queryable)]
+#[derive(Debug, Queryable, Identifiable)]
 pub struct Paste {
     pub id: i32,
-    pub hash: String,
+    pub hash: Option<String>,
     pub paste: String,
 }
 
-#[derive(Insertable)]
-#[table_name="pastes"]
+#[derive(Insertable, Debug)]
+#[table_name = "pastes"]
 pub struct NewPaste<'a> {
     pub paste: &'a str,
 }
-

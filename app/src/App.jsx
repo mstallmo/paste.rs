@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import ViewPaste from './pages/ViewPaste';
 
-const App = props => (
+const App = () => (
   <Router>
     <div>
       <ul>
