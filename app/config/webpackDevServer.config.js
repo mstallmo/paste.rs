@@ -80,7 +80,10 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     proxy: {
       '/api': {
-        target: 'http://[::1]:8000',
+        target:
+          process.platform === 'darwin'
+            ? 'http://[::1]:8000'
+            : 'http://localhost:8000',
         secure: false,
         changeOrigin: true
       }
