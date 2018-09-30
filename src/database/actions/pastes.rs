@@ -20,14 +20,14 @@ pub fn create_paste(conn: &PgConnection, paste_content: &str) -> Option<Paste> {
 
     let inserted_paste: Paste = diesel::insert_into(pastes::table)
         .values(&new_paste)
-        .get_result(&*conn)
+        .get_result(conn)
         .expect("Error saving new paste");
 
     let hash_id = ids.encode(&vec![inserted_paste.id as i64]);
 
     match diesel::update(&inserted_paste)
         .set(hash.eq(hash_id))
-        .get_result(&*conn)
+        .get_result(conn)
     {
         Ok(v) => Some(v),
         Err(_e) => return None,
@@ -49,11 +49,8 @@ pub fn retrieve_paste(conn: &PgConnection, hash_string: String) -> Option<Paste>
 
     let mut results = pastes
         .filter(id.eq(request_id))
-        .load::<Paste>(&*conn)
+        .load::<Paste>(conn)
         .expect("Error loading pastes");
 
-    match results.pop() {
-        Some(v) => Some(v),
-        None => None,
-    }
+    results.pop()
 }

@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import {
-  Grid,
+  Container,
   Row,
   Col,
   Button,
   FormGroup,
-  FormControl
-} from 'react-bootstrap';
+  Input,
+  Form
+} from 'reactstrap';
 
 class Home extends Component {
   constructor(props) {
@@ -27,7 +28,6 @@ class Home extends Component {
     })
       .then(res => res.text())
       .then(text => {
-        console.log(text);
         const hash = text.split('/');
         this.props.history.push(`/view/${hash[hash.length - 1]}`);
       });
@@ -39,28 +39,28 @@ class Home extends Component {
 
   render() {
     return (
-      <Grid>
+      <Container>
         <Row>
-          <Col md={12}>
+          <Col xs={12}>
             <h2 className={'header'}>Home</h2>
-            <form>
+            <Form>
               <FormGroup>
-                <FormControl
-                  componentClass={'textarea'}
+                <Input
+                  type={'textarea'}
                   value={this.state.pasteText}
                   onChange={e => this.handleChange(e.target.value)}
                   className={'paste-input'}
-                  rows={'8'}
+                  rows={8}
                 />
               </FormGroup>
-            </form>
+              <Button id={'submit-button'} onClick={() => this.onClick()}>
+                Submit
+              </Button>
+            </Form>
             <br />
-            <Button id={'submit-button'} onClick={() => this.onClick()}>
-              Submit
-            </Button>
           </Col>
         </Row>
-      </Grid>
+      </Container>
     );
   }
 }

@@ -3,21 +3,31 @@ import './App.css';
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import ViewPaste from './pages/ViewPaste';
+import { Navbar, Nav, NavItem, NavLink } from 'reactstrap';
 
 const App = () => (
   <Router>
     <div>
-      <ul>
-        <li>
-          <Link to="/">Home</Link>
-        </li>
-        <li>
-          <Link to="/about">About</Link>
-        </li>
-        <li>
-          <Link to="/topics">Topics</Link>
-        </li>
-      </ul>
+      <Navbar color={'light'}>
+        <Nav>
+          <NavItem className={'ml-auto'}>
+            <NavLink to="/" tag={Link}>
+              Home
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/about" tag={Link}>
+              About
+            </NavLink>
+          </NavItem>
+          <NavItem>
+            <NavLink to="/topics" tag={Link}>
+              Topics
+            </NavLink>
+          </NavItem>
+        </Nav>
+      </Navbar>
+
       <hr />
       <Route exact path="/" component={Home} />
       <Route path="/about" component={About} />
