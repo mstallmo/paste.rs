@@ -5,8 +5,8 @@ use super::models::{NewPaste, Paste};
 use super::schema::pastes;
 use super::schema::pastes::dsl::*;
 use diesel::prelude::*;
+use diesel::result::Error;
 
-//TODO: Wrap both db actions in transactions
 pub fn create_paste(conn: &PgConnection, paste_content: &str) -> Option<Paste> {
     let ids_some = HashIds::new_with_salt_and_min_length("the answer is 42".to_string(), 10);
     let ids = match ids_some {
@@ -18,19 +18,20 @@ pub fn create_paste(conn: &PgConnection, paste_content: &str) -> Option<Paste> {
         paste: paste_content,
     };
 
-    let inserted_paste: Paste = diesel::insert_into(pastes::table)
-        .values(&new_paste)
-        .get_result(conn)
-        .expect("Error saving new paste");
+    match conn.transaction::<_, Error, _>(|| {
+        let inserted_paste: Paste = diesel::insert_into(pastes::table)
+            .values(&new_paste)
+            .get_result(conn)
+            .expect("Error saving new paste");
 
-    let hash_id = ids.encode(&vec![inserted_paste.id as i64]);
+        let hash_id = ids.encode(&vec![inserted_paste.id as i64]);
 
-    match diesel::update(&inserted_paste)
-        .set(hash.eq(hash_id))
-        .get_result(conn)
-    {
+        diesel::update(&inserted_paste)
+            .set(hash.eq(hash_id))
+            .get_result(conn)
+    }) {
         Ok(v) => Some(v),
-        Err(_e) => return None,
+        Err(_e) => None,
     }
 }
 

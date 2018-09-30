@@ -1,6 +1,3 @@
-extern crate hashids;
-
-use self::hashids::HashIds;
 use crate::database::actions::pastes;
 use crate::database::DbConn;
 use rocket::Data;
