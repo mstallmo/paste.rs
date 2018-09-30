@@ -37,5 +37,5 @@ script:
   - cargo build --all --release
 deploy:
   provider: heroku
-  api_key: 7c923418-4829-4fac-8833-9b6525db6ffe
+  api_key: $HEROKU_KEY
   skip_cleanup: true
