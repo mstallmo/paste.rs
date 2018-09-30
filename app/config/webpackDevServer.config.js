@@ -80,8 +80,9 @@ module.exports = function(proxy, allowedHost) {
     public: allowedHost,
     proxy: {
       '/api': {
-        target: 'http://localhost:8000',
-        secure: false
+        target: 'http://[::1]:8000',
+        secure: false,
+        changeOrigin: true
       }
     },
     before(app) {
